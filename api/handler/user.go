@@ -9,7 +9,7 @@ import (
 
 func getUser(userService user.Usecase) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"user": "get user"})
+		c.JSON(http.StatusNotImplemented, gin.H{"user": "get user"})
 	})
 }
 

@@ -18,11 +18,18 @@ type User struct {
 	Pass      string // hashed password
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt time.Time
 }
 
 func NewUser(firstName string, lastName string, email string, pass string) (*User, error) {
-	u := &User{}
+	u := &User{
+		ID:        uuid.New(),
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Pass:      pass,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
 
 	err := u.Validate()
 
