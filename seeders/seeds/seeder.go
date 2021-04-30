@@ -1,16 +1,19 @@
 package seeds
 
 import (
-	"database/sql"
 	"log"
+	"matcher/entity"
 	"reflect"
+
+	"gorm.io/gorm"
 )
 
 type Seed struct {
-	db *sql.DB
+	// TODO: Update to use internal DB struct
+	db *gorm.DB
 }
 
-func Execute(db *sql.DB, seedMethodNames ...string) {
+func Execute(db *gorm.DB, seedMethodNames ...string) {
 	s := Seed{db}
 
 	seedType := reflect.TypeOf(s)
@@ -22,6 +25,17 @@ func Execute(db *sql.DB, seedMethodNames ...string) {
 			method := seedType.Method(i)
 			seed(s, method.Name)
 		}
+	}
+}
+
+// Teardown drops all tables
+func Teardown(db *gorm.DB) {
+	if db.Migrator().HasTable(&entity.User{}) {
+		db.Migrator().DropTable(&entity.User{})
+	}
+
+	if db.Migrator().HasTable(&entity.Like{}) {
+		db.Migrator().DropTable(&entity.Like{})
 	}
 }
 

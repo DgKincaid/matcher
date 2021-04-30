@@ -35,7 +35,8 @@ func main() {
 		case "up":
 			seeds.Execute(db.Client, args[1:]...)
 		case "down":
-			log.Println("seeders down")
+			// log.Println("seeders down")
+			seeds.Teardown(db.Client)
 		}
 	}
 }

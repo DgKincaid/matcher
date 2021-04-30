@@ -1,13 +1,12 @@
 package db
 
 import (
-	"database/sql"
-
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type DB struct {
-	Client *sql.DB
+	Client *gorm.DB
 }
 
 func Get(connStr string) (*DB, error) {
@@ -21,17 +20,10 @@ func Get(connStr string) (*DB, error) {
 	}, nil
 }
 
-func (d *DB) Close() error {
-	return d.Client.Close()
-}
+func get(connStr string) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 
-func get(connStr string) (*sql.DB, error) {
-	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 

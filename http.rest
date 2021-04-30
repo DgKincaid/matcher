@@ -1,2 +1,18 @@
 ###
 GET http://localhost:3001/v1/users/3333
+
+###
+POST http://localhost:3001/v1/likes
+Content-Type: application/json
+
+{
+    "fromId": "05563251-45af-4bb9-b5bf-21cae961b254",
+    "toId": "fb8fb77f-295d-4126-bef9-9aea2b93ae43"
+}
+
+###
+GET http://localhost:3001/v1/likes/fb8fb77f-295d-4126-bef9-9aea2b93ae43
+
+
+###
+GET http://localhost:3001/v1/likes/fb8fb77f-295d-4126-bef9-9aea2b93ae43?page=10&pageSize=3

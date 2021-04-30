@@ -5,6 +5,7 @@ import (
 	"matcher/api/app"
 	"matcher/api/handler"
 	"matcher/repository"
+	"matcher/services/like"
 	"matcher/services/user"
 
 	"github.com/gin-contrib/cors"
@@ -32,7 +33,11 @@ func main() {
 	userRepo := repository.NewUserPostgres(a.DB.Client)
 	userService := user.NewUserService(userRepo)
 
+	likeRepo := repository.NewLikePostgres(a.DB.Client)
+	likeService := like.NewLikeService(likeRepo)
+
 	handler.UsersHandler(r, userService)
+	handler.LikesHandler(r, likeService)
 
 	r.Run(":3001")
 

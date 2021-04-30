@@ -30,7 +30,13 @@ func (s *Service) CreateUser(firstName string, lastName string, email string, pa
 		return u.ID, err
 	}
 
-	return u.ID, nil
+	id, err := s.repo.Create(u)
+
+	if err != nil {
+		return u.ID, err
+	}
+
+	return id, nil
 }
 
 func (s *Service) GetUser(id uuid.UUID) (*entity.User, error) {

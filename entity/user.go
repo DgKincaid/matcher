@@ -11,7 +11,7 @@ import (
 // User Struct
 type User struct {
 	gorm.Model
-	ID        uuid.UUID
+	ID        uuid.UUID `gorm:"type:uuid;primaryKey;"`
 	FirstName string
 	LastName  string
 	Email     string
