@@ -9,7 +9,6 @@ import (
 
 	"matcher/entity"
 	"matcher/repository"
-	"matcher/services/like"
 	"matcher/services/user"
 )
 
@@ -30,13 +29,6 @@ func (s Seed) UserSeed() {
 	userRepo := repository.NewUserPostgres(s.db)
 	userService := user.NewUserService(userRepo)
 
-	likeRepo := repository.NewLikePostgres(s.db)
-	likeService := like.NewLikeService(likeRepo)
-
-	u := DefaultUser()
-
-	// userRepo.Create(u)
-
 	for i := 0; i < 100; i++ {
 		firstName := faker.FirstName()
 		lastName := faker.LastName()
@@ -45,12 +37,10 @@ func (s Seed) UserSeed() {
 
 		id, err := userService.CreateUser(firstName, lastName, email, faker.Password())
 
-		likeService.CreateLike(id, u.ID)
-
 		if err != nil {
 			log.Fatal("Error Seeding user", id, err)
 		}
 
-		log.Printf("Successfully created, %s", id)
+		// log.Printf("Successfully created, %s", id)
 	}
 }

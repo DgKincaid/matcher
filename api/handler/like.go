@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"matcher/api/input"
 	"matcher/api/output"
@@ -18,7 +17,7 @@ func createLike(likeService like.Usecase) gin.HandlerFunc {
 		var json input.CreateLike
 
 		if err := c.ShouldBindJSON(&json); err != nil {
-			log.Fatal(err.Error())
+			log.Println(err.Error())
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -26,7 +25,7 @@ func createLike(likeService like.Usecase) gin.HandlerFunc {
 		err := likeService.CreateLike(json.FromID, json.ToID)
 
 		if err != nil {
-			log.Fatal(err.Error())
+			log.Println(err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Couldnt create like"})
 			return
 		}
@@ -42,10 +41,17 @@ func getLikes(likeService like.Usecase) gin.HandlerFunc {
 
 		if err := c.ShouldBindWith(&pagination, binding.Query); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		fmt.Println(pagination)
-		results, err := likeService.ListLikes(uuid.MustParse(c.Param("userId")), pagination.Page, pagination.PageSize)
+		userId, err := uuid.Parse(c.Param("userId"))
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		results, err := likeService.ListLikes(userId, pagination.Page, pagination.PageSize)
 
 		if err != nil {
 			log.Print(err.Error())

@@ -1,6 +1,9 @@
 dependencies:
 	go mod download
 
+docker-fresh:
+	go run seeders/main.go down && go run seeders/main.go up && go run api/main.go 
+
 run:
 	go run api/main.go
 
