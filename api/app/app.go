@@ -5,28 +5,15 @@ import (
 	"log"
 	"matcher/config"
 	"matcher/db"
-
-	"github.com/gin-gonic/gin"
 )
 
-// ServiceFactory
-type ServiceFactory struct {
-}
-
-// RepositoryFactory stores repos
-type RepositoryFactory struct {
-}
-
-// App struct
+// App struct used to create a default application
 type App struct {
-	DB         *db.DB
-	router     *gin.Engine
-	config     *config.Config
-	Services   ServiceFactory
-	Repository RepositoryFactory
+	DB     *db.DB
+	config *config.Config
 }
 
-// Initialize App
+// Initialize App connects to the database
 func Initialize() (*App, error) {
 	config := config.Get()
 

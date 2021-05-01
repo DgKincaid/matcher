@@ -1,18 +1,29 @@
 ###
-GET http://localhost:3001/v1/users/3333
+GET http://localhost:3001/v1/users/f6a82585-a9ff-45e0-b316-b1358f7b11d7
+
+### 
+POST http://localhost:3001/v1/users
+Content-Type: application/json
+
+{
+    "firstName": "Toby",
+    "lastName": "Test",
+    "email": "toby.test@test.com",
+    "pass": "newPassword"
+}
 
 ###
 POST http://localhost:3001/v1/likes
 Content-Type: application/json
 
 {
-    "fromId": "05563251-45af-4bb9-b5bf-21cae961b254",
-    "toId": "fb8fb77f-295d-4126-bef9-9aea2b93ae43"
+    "fromId": "008d7cc3-cd1d-42ca-a57e-152acd8ab6a3",
+    "toId": "f6a82585-a9ff-45e0-b316-b1358f7b11d7"
 }
 
 ###
-GET http://localhost:3001/v1/likes/fb8fb77f-295d-4126-bef9-9aea2b93ae43
+GET http://localhost:3001/v1/likes/f6a82585-a9ff-45e0-b316-b1358f7b11d7
 
 
 ###
-GET http://localhost:3001/v1/likes/fb8fb77f-295d-4126-bef9-9aea2b93ae43?page=10&pageSize=3
+GET http://localhost:3001/v1/likes/f6a82585-a9ff-45e0-b316-b1358f7b11d7?page=0&pageSize=3

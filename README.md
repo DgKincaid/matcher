@@ -14,6 +14,10 @@ TEST_DB_HOST=localhost
 TEST_DB_NAME=matchertest
 ```
 
+## To Run
+
+`docker-compose up` starts postgres db and golang application. Golang api is listening on port `3001`.
+
 ## Overview
 
 This is a simple api that exposes 4 endpoints:
@@ -23,7 +27,10 @@ This is a simple api that exposes 4 endpoints:
 - `GET    /v1/likes/:userId` Get all the users that like the :userId user
 - `POST   /v1/likes` Create a new like relationship
 
-Uses docker to run both a postgres DB and the golang application.
+Uses docker to run both a postgres DB and the golang application. On `docker-compose up` will run make docker-fresh which first cleans the DB (deletes the data) and then seeds it with new test data. 
+
+Using a VS Code extension `https://github.com/Huachao/vscode-restclient` this allows you to run CURL commands within vscode from the http.rest file.
+
 ## Structure
 
 Loosely modeled after Clean Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
@@ -53,6 +60,38 @@ Using Makefle
 - `make test-unit` to run all unit tests
 - `make test-integration` to run integration tests
 
+## Endpoints
+
+Create User
+
+```
+POST http://localhost:3001/v1/users
+Content-Type: application/json
+
+{
+    "firstName": "Toby",
+    "lastName": "Test",
+    "email": "toby.test@test.com",
+    "pass": "newPassword"
+}
+```
+Get likes, gets who likes the user. Takes query params for pagination the default values are:
+page=0
+pageSize=100
+
+```
+GET http://localhost:3001/v1/likes/fb8fb77f-295d-4126-bef9-9aea2b93ae43?page=10&pageSize=3
+```
+
+Create like, fromId and toId need to be uuids and within the DB
+```
+POST http://localhost:3001/v1/likes
+Content-Type: application/json
+{
+    "fromId": "05563251-45af-4bb9-b5bf-21cae961b254",
+    "toId": "fb8fb77f-295d-4126-bef9-9aea2b93ae43"
+}
+```
 ## Notes
 
 There is no authorization or authentication due to its complexity, I would use a JWT based auth solution and use gin's middleware to interagat the token for authentication and authorization (the user id within + scopes).

@@ -11,10 +11,12 @@ import (
 	"github.com/google/uuid"
 )
 
+// getUser gets the user by userId. Returns a output.User
+// take a userId as a query param NEEDS TO BE UUID
 func getUser(userService user.Usecase) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
 
-		userId, err := uuid.Parse(c.Param("userId"))
+		userId, err := uuid.Parse(c.Param("id"))
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -39,6 +41,7 @@ func getUser(userService user.Usecase) gin.HandlerFunc {
 	})
 }
 
+// createUser creates a new user
 func createUser(userService user.Usecase) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
 		var json input.CreateUser
@@ -60,6 +63,7 @@ func createUser(userService user.Usecase) gin.HandlerFunc {
 		c.JSON(http.StatusCreated, gin.H{"userId": id})
 	})
 }
+
 func UsersHandler(r *gin.Engine, userService user.Usecase) {
 	v1 := r.Group("v1")
 	{

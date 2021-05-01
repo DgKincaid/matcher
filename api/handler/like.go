@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// createLike creates a new like between 2 users. input is the input.CreateLike struct and out put is 204
 func createLike(likeService like.Usecase) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
 		var json input.CreateLike
@@ -30,10 +31,11 @@ func createLike(likeService like.Usecase) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusCreated, gin.H{"user": "create user"})
+		c.String(http.StatusCreated, "")
 	})
 }
 
+// getLikes gets who likes the user paginated max page size 100.
 func getLikes(likeService like.Usecase) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
 
@@ -74,6 +76,8 @@ func getLikes(likeService like.Usecase) gin.HandlerFunc {
 	})
 }
 
+// LikesHandler creates all the routes + functions that the likes /likes is responsible for
+// closure used to pass the service through to the handlers
 func LikesHandler(r *gin.Engine, likeService like.Usecase) {
 	v1 := r.Group("v1")
 	{

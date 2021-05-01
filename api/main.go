@@ -4,6 +4,7 @@ import (
 	"log"
 	"matcher/api/app"
 	"matcher/api/handler"
+	"matcher/api/middleware"
 	"matcher/repository"
 	"matcher/services/like"
 	"matcher/services/user"
@@ -13,10 +14,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// main entrypoint for the api application. Responsible for initializing services/repos
 func main() {
-	err := godotenv.Load()
-
-	if err != nil {
+	// Using godotenv loads env variables from the .env file
+	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file.")
 	}
 
@@ -29,6 +30,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.Default())
+	r.Use(middleware.Auth())
 
 	userRepo := repository.NewUserPostgres(a.DB.Client)
 	userService := user.NewUserService(userRepo)
@@ -40,6 +42,4 @@ func main() {
 	handler.LikesHandler(r, likeService)
 
 	r.Run(":3001")
-
-	log.Println("Running....")
 }

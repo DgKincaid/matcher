@@ -31,5 +31,15 @@ func (r *UserPostgres) Create(e *entity.User) (uuid.UUID, error) {
 }
 
 func (r *UserPostgres) Get(id uuid.UUID) (*entity.User, error) {
-	return &entity.User{}, nil
+
+	var user entity.User
+
+	result := r.db.First(&user, "id = ?", id)
+
+	if result.Error != nil {
+		log.Printf("Error getting user, %v", result.Error)
+		return &entity.User{}, result.Error
+	}
+
+	return &user, nil
 }

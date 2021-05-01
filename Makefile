@@ -18,3 +18,6 @@ test-unit:
 
 test-integration:
 	go test -v 
+
+document:
+	godoc -http=:6060
